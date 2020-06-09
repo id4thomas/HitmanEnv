@@ -113,10 +113,10 @@ class HitmanMap1(gym.Env):
     self.goal_loc=[2,1]
   def step(self, action):
     #check legal move
-    r_legal1=(cur_loc[0]+dr[action])>=7
-    r_legal2=(cur_loc[0]+dr[action])<0
-    c_legal1=(cur_loc[1]+dc[action])>=7
-    c_legal2=(cur_loc[1]+dc[action])<0
+    r_legal1=(self.cur_loc[0]+self.dr[action])>=7
+    r_legal2=(self.cur_loc[0]+self.dr[action])<0
+    c_legal1=(self.cur_loc[1]+self.dc[action])>=7
+    c_legal2=(self.cur_loc[1]+self.dc[action])<0
     illegal=r_legal1|r_legal2|c_legal1|c_legal2
     if illegal:
       done=True
@@ -133,28 +133,30 @@ class HitmanMap1(gym.Env):
       done=False
 
       #1-check goal
-      if self.cur_loc[0]==goal_loc[0] and self.cur_loc[1]==goal_loc[1]:
+      if self.cur_loc[0]==self.goal_loc[0] and self.cur_loc[1]==self.goal_loc[1]:
         reward=1
         done=True
+        print('GOAL REACHED')
       #2-check out of bounds
-      elif self.cur_state[self.cur_loc[0],self.cur_loc[1]]<0:
+      elif self.cur_state[0][self.cur_loc[0],self.cur_loc[1]]<0:
         reward=-1
         done=True
       #3-perform
       else:
-        for i in range(len(enemies)):
-          e=enemies[i]
+        for i in range(len(self.enemies)):
+          e=self.enemies[i]
           #enemy caught
           if e.check_range(self.cur_loc[0],self.cur_loc[1]):
             done=True
             reward=-1
             break
           elif e.check_caught(self.cur_loc[0],self.cur_loc[1]):
+            del self.enemies[i]
             break
 
         #move hitman
-        self.cur_state[prev_r,prev_c]=1
-        self.cur_state[self.cur_loc[0],self.cur_loc[0]]=0
+        self.cur_state[0][prev_r,prev_c]=1
+        self.cur_state[0][self.cur_loc[0],self.cur_loc[1]]=0
 
     return self.cur_state, reward, done, {}
 
@@ -187,3 +189,11 @@ if __name__ == "__main__":
     print(hm1.map)
     s=hm1.reset()
     print(s.shape)
+    ans_path=[2,2,2,2,0,0]
+    for a in ans_path:
+      #self.cur_state, reward, done, {}
+      s,r,d,_=hm1.step(a)
+      print('Step {} Reward {} Pos{},{}'.format(a,r,hm1.cur_loc[0],hm1.cur_loc[1]))
+      print(hm1.cur_state[0])
+      if d:
+        break

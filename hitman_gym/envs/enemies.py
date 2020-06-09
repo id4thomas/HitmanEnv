@@ -5,7 +5,7 @@ class BlueEnemy:
         #direction
         #location
         self.pos=[r,c]
-        self.dir=dir
+        self.dir=dir-3
 
         #Up,down,left,right
         self.check_r=[-1,1,0,0]
@@ -18,4 +18,4 @@ class BlueEnemy:
 
     def check_caught(self,r,c):
         return self.pos[0]==r and self.pos[1]==c
-# pycharm github 연동 test :^)
+# pycharm github 연동 test :^) == HI

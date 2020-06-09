@@ -3,7 +3,7 @@ from gym import error, spaces, utils
 from gym.utils import seeding
 
 import numpy as np
-
+from enemies import BlueEnemy
 #Attempt 1
 MAP={
   #hitman&enemy location
@@ -109,6 +109,8 @@ class HitmanMap1(gym.Env):
     self.dr=[-1,1,0,0]
     self.dc=[0,0,-1,1]
 
+    self.enemies=[]
+    self.goal_loc=[2,1]
   def step(self, action):
     #check legal move
     r_legal1=(cur_loc[0]+dr[action])>=7
@@ -119,18 +121,57 @@ class HitmanMap1(gym.Env):
     if illegal:
       done=True
       reward=-1
-      pass
     else:
-      pass
+      #move
+      prev_r=self.cur_loc[0]
+      prev_c=self.cur_loc[1]
+
+      self.cur_loc[0]+=self.dr[action]
+      self.cur_loc[1]+=self.dc[action]
+      #default
+      reward=0
+      done=False
+
+      #1-check goal
+      if self.cur_loc[0]==goal_loc[0] and self.cur_loc[1]==goal_loc[1]:
+        reward=1
+        done=True
+      #2-check out of bounds
+      elif self.cur_state[self.cur_loc[0],self.cur_loc[1]]<0:
+        reward=-1
+        done=True
+      #3-perform
+      else:
+        for i in range(len(enemies)):
+          e=enemies[i]
+          #enemy caught
+          if e.check_range(self.cur_loc[0],self.cur_loc[1]):
+            done=True
+            reward=-1
+            break
+          elif e.check_caught(self.cur_loc[0],self.cur_loc[1]):
+            break
+
+        #move hitman
+        self.cur_state[prev_r,prev_c]=1
+        self.cur_state[self.cur_loc[0],self.cur_loc[0]]=0
 
     return self.cur_state, reward, done, {}
+
   def reset(self):
+    #Reset Map
     loc=np.array(MAP_a2['loc']) #(7,7)
     conn=np.array(MAP_a2['conn']) #(7,7)
     print('loc',loc.shape)
     print('conn',conn.shape)
     self.cur_state=np.stack([loc,conn],axis=0)
+
+    #Reset Positions
     self.cur_loc=[4,5]
+
+    #Reset Enemies
+    self.enemies=[]
+    self.enemies.append(BlueEnemy(4,2,5))
     return self.cur_state #(2,7,7)
   '''
   def render(self, mode='human'):

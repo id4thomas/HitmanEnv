@@ -55,7 +55,7 @@ MAP={
 }
 
 #Attempt2: Remove Direction Channel
-MAP={
+MAP_a2={
   #hitman&enemy location
   # >=0 : Path Exist
 	#0: Hitman
@@ -106,12 +106,32 @@ class HitmanMap1(gym.Env):
     self.map=np.zeros((7,7))
     self.action_space
 
+    self.dr=[-1,1,0,0]
+    self.dc=[0,0,-1,1]
+
   def step(self, action):
-    pass
-    #return np.array(self.state), reward, done, {}
+    #check legal move
+    r_legal1=(cur_loc[0]+dr[action])>=7
+    r_legal2=(cur_loc[0]+dr[action])<0
+    c_legal1=(cur_loc[1]+dc[action])>=7
+    c_legal2=(cur_loc[1]+dc[action])<0
+    illegal=r_legal1|r_legal2|c_legal1|c_legal2
+    if illegal:
+      done=True
+      reward=-1
+      pass
+    else:
+      pass
+
+    return self.cur_state, reward, done, {}
   def reset(self):
-    pass
-    #return np.array(self.state)
+    loc=np.array(MAP_a2['loc']) #(7,7)
+    conn=np.array(MAP_a2['conn']) #(7,7)
+    print('loc',loc.shape)
+    print('conn',conn.shape)
+    self.cur_state=np.stack([loc,conn],axis=0)
+    self.cur_loc=[4,5]
+    return self.cur_state #(2,7,7)
   '''
   def render(self, mode='human'):
     ...
@@ -124,3 +144,5 @@ class HitmanMap1(gym.Env):
 if __name__ == "__main__":
     hm1=HitmanMap1()
     print(hm1.map)
+    s=hm1.reset()
+    print(s.shape)

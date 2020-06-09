@@ -5,3 +5,5 @@ class BlueEnemy:
         #direction
         #location
         pass
+
+# pycharm github 연동 test :^)

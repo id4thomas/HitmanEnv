@@ -143,6 +143,8 @@ class HitmanMap1(gym.Env):
         done=True
       #3-perform
       else:
+        #all enemies: check range
+        caught=[]
         for i in range(len(self.enemies)):
           e=self.enemies[i]
           #enemy caught
@@ -151,9 +153,11 @@ class HitmanMap1(gym.Env):
             reward=-1
             break
           elif e.check_caught(self.cur_loc[0],self.cur_loc[1]):
-            del self.enemies[i]
-            break
-
+            caught.append(e)
+        #remove caught enemies
+        print('Caught {} enemies'.format(len(caught)))
+        for c in caught:
+          self.enemies.remove(c)
         #move hitman
         self.cur_state[0][prev_r,prev_c]=1
         self.cur_state[0][self.cur_loc[0],self.cur_loc[1]]=0

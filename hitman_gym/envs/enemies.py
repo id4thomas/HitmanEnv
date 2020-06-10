@@ -14,6 +14,7 @@ class BlueEnemy:
     def check_range(self,r,c):
         r_chk=(r-self.pos[0]==self.check_r[self.dir])
         c_chk=(c-self.pos[1]==self.check_c[self.dir])
+        #Need to implement if connected check
         return r_chk and c_chk
 
     def check_caught(self,r,c):

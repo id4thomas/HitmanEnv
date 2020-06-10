@@ -6,7 +6,7 @@ class BlueEnemy:
         #location
         self.pos=[r,c]
         self.dir=dir-3
-
+        self.conn=[]
         #Up,down,left,right
         self.check_r=[-1,1,0,0]
         self.check_c=[0,0,-1,1]

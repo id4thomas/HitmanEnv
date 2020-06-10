@@ -1,7 +1,8 @@
 import gym
 from gym import error, spaces, utils
 from gym.utils import seeding
-
+import numpy as np
+from enemies import BlueEnemy
 MAP={
   #hitman&enemy location
   # >=0 : Path Exist
@@ -12,7 +13,7 @@ MAP={
 	#-1: Out of Bounds
   "loc": [
     [-1.,-1.,-1.,-1.,-1.,-1.,-1.],
-    [-1.,0.,1.,1.,4.,-1.,-1.,-1.],
+    [-1.,0.,1.,1.,4.,-1.,-1.],
     [-1.,1.,3.,5.,1.,1.,-1.],
     [-1.,1.,3.,5.,3.,2.,-1.],
     [-1.,6.,1.,1.,1.,-1.,-1.],
@@ -27,7 +28,7 @@ MAP={
   # 0001: Right
   "conn": [
     [-1.,-1.,-1.,-1.,-1.,-1.,-1.],
-    [-1.,5.,7.,3.,6.,-1.,-1.,-1.],
+    [-1.,5.,7.,3.,6.,-1.,-1.],
     [-1.,12.,15.,12.,14.,3.,-1.],
     [-1.,12.,15.,14.,13.,4.,-1.],
     [-1.,9.,11.,3.,10.,-1.,-1.],
@@ -37,7 +38,7 @@ MAP={
 }
 
 #Blue enemy
-class HitmanMap1(gym.Env):
+class HitmanMap2(gym.Env):
   metadata = {'render.modes': ['human']}
 
   #Actions
@@ -57,7 +58,7 @@ class HitmanMap1(gym.Env):
     self.dc=[0,0,-1,1]
 
     self.enemies=[]
-    self.goal_loc=[2,1]
+    self.goal_loc=[3,5]
 
   def step(self, action):
     #check legal move
@@ -69,6 +70,7 @@ class HitmanMap1(gym.Env):
     if illegal:
       done=True
       reward=-1
+      print("Illegal Move")
     else:
       #move
       prev_r=self.cur_loc[0]
@@ -88,20 +90,27 @@ class HitmanMap1(gym.Env):
       #2-check out of bounds
       elif self.cur_state[0][self.cur_loc[0],self.cur_loc[1]]<0:
         reward=-1
+        print("OOB!")
         done=True
       #3-perform
       else:
+        #all enemies: check range
+        caught=[]
         for i in range(len(self.enemies)):
           e=self.enemies[i]
-          #enemy caught
           if e.check_range(self.cur_loc[0],self.cur_loc[1]):
             done=True
             reward=-1
+            print('Hitman Caught!',len(self.enemies))
+            print(e.pos)
             break
+          #removed enemy
           elif e.check_caught(self.cur_loc[0],self.cur_loc[1]):
-            del self.enemies[i]
-            break
-
+            caught.append(e)
+        #remove caught enemies
+        print('Caught {} enemies'.format(len(caught)))
+        for c in caught:
+          self.enemies.remove(c)
         #move hitman
         self.cur_state[0][prev_r,prev_c]=1
         self.cur_state[0][self.cur_loc[0],self.cur_loc[1]]=0
@@ -110,20 +119,27 @@ class HitmanMap1(gym.Env):
     #return np.array(self.state), reward, done, {}
   def reset(self):
     #Reset Map
-    loc=np.array(MAP_a2['loc']) #(7,7)
-    conn=np.array(MAP_a2['conn']) #(7,7)
+    loc=np.array(MAP['loc']) #(7,7)
+    conn=np.array(MAP['conn']) #(7,7)
     print('loc',loc.shape)
     print('conn',conn.shape)
     self.cur_state=np.stack([loc,conn],axis=0)
+    print('stacked',self.cur_state.shape)
 
     #Reset Positions
-    self.cur_loc=[4,5]
+    self.cur_loc=[1,1]
 
     #Reset Enemies
     self.enemies=[]
-    self.enemies.append(BlueEnemy(4,2,5))
+    self.enemies.append(BlueEnemy(4,1,6))#step 3
+    self.enemies.append(BlueEnemy(3,4,5))#step 7
+    self.enemies.append(BlueEnemy(3,3,5))#step 8
+    self.enemies.append(BlueEnemy(3,2,3))#step 9
+    self.enemies.append(BlueEnemy(2,3,5))#step 11
+    self.enemies.append(BlueEnemy(2,2,3))#step 13
+    self.enemies.append(BlueEnemy(1,4,4))#step 15
+
     return self.cur_state #(2,7,7)
-    #return np.array(self.state)
   '''
   def render(self, mode='human'):
     ...
@@ -133,12 +149,15 @@ class HitmanMap1(gym.Env):
     pass
 
 if __name__ == "__main__":
-    hm1=HitmanMap1()
+    hm1=HitmanMap2()
     print(hm1.map)
     s=hm1.reset()
     print(s.shape)
-    ans_path=[2,2,2,2,0,0]
-    for a in ans_path:
+    #0 up 1 down 2 left 3 right
+    ans_path=[1,1,1,3,3,3,0,2,2,3,0,2,0,3,3,1,3,1]
+    for i in range(len(ans_path)):
+      a=ans_path[i]
+      print('\n\nSTEP {} {}'.format(i+1,a))
       #self.cur_state, reward, done, {}
       s,r,d,_=hm1.step(a)
       print('Step {} Reward {} Pos{},{}'.format(a,r,hm1.cur_loc[0],hm1.cur_loc[1]))

@@ -172,7 +172,7 @@ class HitmanMap1(gym.Env):
       if self.cur_loc[0]==self.goal_loc[0] and self.cur_loc[1]==self.goal_loc[1]:
         reward=1
         done=True
-        print('GOAL REACHED')
+        #print('GOAL REACHED')
       #2-check out of bounds
       elif self.cur_state[0][self.cur_loc[0],self.cur_loc[1]]<0:
         reward=-1
@@ -191,7 +191,7 @@ class HitmanMap1(gym.Env):
           elif e.check_caught(self.cur_loc[0],self.cur_loc[1]):
             caught.append(e)
         #remove caught enemies
-        print('Caught {} enemies'.format(len(caught)))
+        #print('Caught {} enemies'.format(len(caught)))
         for c in caught:
           self.enemies.remove(c)
         #move hitman
@@ -205,8 +205,8 @@ class HitmanMap1(gym.Env):
     selected_map=map2
     loc = np.array(selected_map['loc'])  # (7,7)
     conn = np.array(selected_map['conn'])  # (7,7)
-    print('loc', loc.shape)
-    print('conn', conn.shape)
+    #print('loc', loc.shape)
+    #print('conn', conn.shape)
     self.cur_state = np.stack([loc, conn], axis=0)
 
     # Reset Positions

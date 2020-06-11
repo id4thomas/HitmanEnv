@@ -120,7 +120,7 @@ action_size = 4
 main_network = DuelingDQN(env)
 target_network = DuelingDQN(env)
 
-for ep_i in range(2000):
+for ep_i in range(100000):
     done = False
     ep_reward = 0
     env.seed(ep_i)
@@ -141,12 +141,12 @@ for ep_i in range(2000):
 
         # 추가 리워드
         # reward = 00
-        if reward == 0:
+        '''if reward == 0:
             reward = 0.05
 
         if reward == 1:
             reward = 10
-            print("Cong")
+            print("Cong")'''
 
         if previous_memory is not None and not previous_memory[3]:
             replay_memory_append(replay_memory, [previous_memory[0], previous_memory[1], previous_memory[2], obs, previous_memory[3]])

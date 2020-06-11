@@ -92,6 +92,39 @@ MAP_a2={
   ],
 }
 
+map2={
+  #hitman&enemy location
+  # >=0 : Path Exist
+	#0: Hitman
+	#1: Available Path
+	#2: Goal
+	#3,4,5,6: Enemy (Blue) Up,Down,Left,Right
+	#-1: Out of Bounds
+  "loc": [
+    [-1.,-1.,-1.,-1.,-1.,-1.,-1.],
+    [-1.,0.,1.,-1.,-1.,-1.,-1.],
+    [-1.,1.,1.,1.,-1.,-1.,-1.],
+    [-1.,1.,1.,1.,-1.,-1.,-1.],
+    [-1.,-1.,-1.,1.,2.,-1.,-1.],
+    [-1.,-1.,-1.,-1.,-1.,-1.,-1.],
+    [-1.,-1.,-1.,-1.,-1.,-1.,-1.],
+  ],
+  # 1~16 : 4^2 
+  # 0: No connection
+  # 1000: Up
+  # 0100: Down
+  # 0010: Left
+  # 0001: Right
+  "conn": [
+    [-1.,-1.,-1.,-1.,-1.,-1.,-1.],
+    [-1.,5.,6.,-1.,-1.,-1.,-1.],
+    [-1.,12.,13.,6.,-1.,-1.,-1.],
+    [-1.,9.,11.,14.,-1.,-1.,-1.],
+    [-1.,-1.,-1.,9.,2.,-1.,-1.],
+    [-1.,-1.,-1.,-1.,-1.,-1.,-1.],
+    [-1.,-1.,-1.,-1.,-1.,-1.,-1.],
+    ],
+}
 #Simple Map: Agent move to goal
 class HitmanMap1(gym.Env):
   metadata = {'render.modes': ['human']}
@@ -169,18 +202,20 @@ class HitmanMap1(gym.Env):
 
   def reset(self):
     # Reset Map
-    loc = np.array(MAP_a2['loc'])  # (7,7)
-    conn = np.array(MAP_a2['conn'])  # (7,7)
+    selected_map=map2
+    loc = np.array(selected_map['loc'])  # (7,7)
+    conn = np.array(selected_map['conn'])  # (7,7)
     print('loc', loc.shape)
     print('conn', conn.shape)
     self.cur_state = np.stack([loc, conn], axis=0)
 
     # Reset Positions
-    self.cur_loc = [4, 5]
+    #self.cur_loc = [4, 5]
+    self.cur_loc = [1,1]#map2
 
     # Reset Enemies
     self.enemies = []
-    self.enemies.append(BlueEnemy(4, 2, 5, self.cur_state[1][4,2])) #step 3
+    #self.enemies.append(BlueEnemy(4, 2, 5, self.cur_state[1][4,2])) #step 3
     return self.cur_state  # (2,7,7)
 
 def close(self):

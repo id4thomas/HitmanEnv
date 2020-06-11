@@ -3,7 +3,7 @@ from gym import error, spaces, utils
 from gym.utils import seeding
 
 import numpy as np
-from enemies import BlueEnemy
+from hitman_gym.envs.enemies import BlueEnemy
 
 # Attempt 1
 MAP = {

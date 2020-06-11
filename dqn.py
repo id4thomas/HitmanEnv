@@ -20,7 +20,7 @@ class DuelingDQN:
         self.hideen_size = 32
         self.learning_rate = 5e-4
 
-        self.e = 1.0
+        self.e = 0.01
 
         self.inputs = tf.keras.layers.Input(shape=(7, 7, 2,))
 
@@ -49,8 +49,6 @@ class DuelingDQN:
         if self.e > np.random.rand():
             a = random.choice([0, 1, 2, 3])
         else:
-            state = np.transpose(state, (1, 2, 0))
-            state = np.reshape(state, (1, 7, 7, 2))
             Q = self.model.predict(state)
             a = np.argmax(Q)
 
@@ -76,6 +74,10 @@ def train_minibatch(main_network, target_network):
     minibatch_loss = list()
     for sample in random.sample(replay_memory, batch_size):
         state, action, reward, next_state, done = sample
+        state = np.transpose(state, (1, 2, 0))
+        state = np.reshape(state, (1, 7, 7, 2))
+        next_state = np.transpose(next_state, (1, 2, 0))
+        next_state = np.reshape(next_state, (1, 7, 7, 2))
         Q = main_network.model.predict(state)
 
         if done:
@@ -130,6 +132,8 @@ for ep_i in range(2000):
     previous_memory = None
     round_loss = list()
     while not done:
+        obs = np.transpose(obs, (1, 2, 0))
+        obs = np.reshape(obs, (1, 7, 7, 2))
 
         action = main_network.predict(obs)  # my
 
@@ -142,6 +146,7 @@ for ep_i in range(2000):
 
         if reward == 1:
             reward = 10
+            print("Cong")
 
         if previous_memory is not None and not previous_memory[3]:
             replay_memory_append(replay_memory, [previous_memory[0], previous_memory[1], previous_memory[2], obs, previous_memory[3]])

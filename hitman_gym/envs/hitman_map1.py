@@ -166,7 +166,6 @@ class HitmanMap1(gym.Env):
 
       self.cur_loc[0]+=self.dr[action]
       self.cur_loc[1]+=self.dc[action]
-      print("loc {} {}".format(self.cur_loc[0],self.cur_loc[1]))
       #default
       reward=0
       done=False
@@ -175,6 +174,7 @@ class HitmanMap1(gym.Env):
       if self.cur_loc[0]==self.goal_loc[0] and self.cur_loc[1]==self.goal_loc[1]:
         reward=1
         done=True
+        print("reach goal loc {} {}".format(self.cur_loc[0],self.cur_loc[1]))
         #print('GOAL REACHED')
       #2-check out of bounds
       elif self.cur_state[0][self.cur_loc[0],self.cur_loc[1]]<0:

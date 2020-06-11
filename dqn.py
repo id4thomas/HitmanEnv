@@ -163,3 +163,4 @@ for ep_i in range(2000):
     if ep_i % 50 == 0 and ep_i != 0:
         main_network.save_model('./weight/model_ep{}.h5'.format(ep_i))
 
+##

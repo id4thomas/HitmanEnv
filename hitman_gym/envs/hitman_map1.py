@@ -227,7 +227,8 @@ if __name__ == "__main__":
     print(hm1.map)
     s = hm1.reset()
     print(s.shape)
-    ans_path = [2, 2, 2, 2, 0, 0]
+    # ans_path = [2, 2, 2, 2, 0, 0]
+    ans_path = [1,1,3,3,1,3]
     for i in range(len(ans_path)):
         # self.cur_state, reward, done, {}
         a = ans_path[i]

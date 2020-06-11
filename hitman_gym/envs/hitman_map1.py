@@ -146,9 +146,11 @@ class HitmanMap1(gym.Env):
     self.dc=[0,0,-1,1]
 
     self.enemies=[]
+    #self.goal_loc=[2,1]
     self.goal_loc=[4,4]
   def step(self, action):
     #check legal move
+    print("loc {} {}".format(self.cur_loc[0],self.cur_loc[1]))
     r_legal1=(self.cur_loc[0]+self.dr[action])>=7
     r_legal2=(self.cur_loc[0]+self.dr[action])<0
     c_legal1=(self.cur_loc[1]+self.dc[action])>=7

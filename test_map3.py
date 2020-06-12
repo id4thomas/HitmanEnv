@@ -16,6 +16,6 @@ for i in range(len(ans_path)):
     print('\n\nSTEP {} {}'.format(i + 1, a))
     s, r, d, _ = hm.step(a)
     print('Step {} Reward {} Pos{},{}'.format(a, r, hm.cur_loc[0], hm.cur_loc[1]))
-    print(hm3.cur_state[0])
+    print(hm.cur_state[0])
     if d:
         break

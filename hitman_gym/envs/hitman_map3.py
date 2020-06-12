@@ -189,23 +189,27 @@ class HitmanMap3(gym.Env):
                     c_legal1 = (next_moved[1] + self.dc[m_e.dir])  >= 7
                     c_legal2 = (next_moved[1] + self.dc[m_e.dir])  < 0
                     conn="{0:4b}".format(int(self.cur_state[1][moved[0],moved[1]]))[-4:]
-                    oob = (self.cur_state[0][next_moved[0],next_moved[1]]=='-1')
+                    oob = (self.cur_state[0][next_moved[0],next_moved[1]]==-1)
                     not_conn=conn[m_e.dir]!='1'
                     illegal = r_legal1 | r_legal2 | c_legal1 | c_legal2 | not_conn | oob
 
+                    #update map
+                    self.cur_state[0][prev_pos[0],prev_pos[1]]=1.
+                    
                     if illegal:
                         #turn around
                         new_dir={0:1,1:0,2:3,3:2}.get(m_e.dir)
                         m_e.dir=new_dir
-                        #update map
-                        self.cur_state[0][prev_pos[0],prev_pos[1]]='1'
-                        self.cur_state[0][moved[0],moved[1]]=str(3+m_e.dir)
+                        self.cur_state[0][moved[0],moved[1]]=3+m_e.dir
                         
                         #check again
                         if e.check_range(self.cur_loc[0], self.cur_loc[1],self.cur_state[1][moved[0],moved[1]]):
                             done = True
                             reward = -1
                             break
+                    else:
+                        self.cur_state[0][moved[0],moved[1]]=3+m_e.dir
+
                 # Check Again
                 '''
                 for i in range(len(self.move_enemies)):

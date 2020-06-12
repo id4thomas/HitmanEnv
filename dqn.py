@@ -108,7 +108,7 @@ def replay_memory_append(replay_memory, memory):
 
 # main
 
-env = gym.make('hitman-v0')
+env = gym.make('hitman-v1')#blue enemy
 
 replay_memory = list()
 

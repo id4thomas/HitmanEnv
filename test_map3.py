@@ -3,7 +3,7 @@ import hitman_gym
 
 import os
 
-hm = gym.make('hitman-v3')
+hm = gym.make('hitman-v2')
 
 s = hm.reset()
 print(s.shape)

@@ -49,5 +49,5 @@ class YellowEnemy:
     def moved_pos(self,pos):
         return [pos[0]+self.check_r[self.dir],pos[1]+self.check_c[self.dir]]
 
-    def update_dir(self,dir):
+    #def update_dir(self,dir):
         

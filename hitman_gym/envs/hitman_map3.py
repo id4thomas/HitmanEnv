@@ -154,7 +154,7 @@ class HitmanMap3(gym.Env):
                     elif e.check_caught(self.cur_loc[0], self.cur_loc[1]):
                         caught.append(e)
                 # remove caught enemies
-                print('Caught {} enemies'.format(len(caught)))
+                #print('Caught {} enemies'.format(len(caught)))
                 for c in caught:
                     self.enemies.remove(c)
 
@@ -226,10 +226,10 @@ class HitmanMap3(gym.Env):
         # MAP=yellow_yr
         loc = np.array(MAP['loc'])  # (7,7)
         conn = np.array(MAP['conn'])  # (7,7)
-        print('loc', loc.shape)
-        print('conn', conn.shape)
+        #print('loc', loc.shape)
+        #print('conn', conn.shape)
         self.cur_state = np.stack([loc, conn], axis=0)
-        print('stacked', self.cur_state.shape)
+        #print('stacked', self.cur_state.shape)
 
         # Reset Positions
         self.cur_loc = [3, 1]

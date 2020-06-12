@@ -238,9 +238,9 @@ class HitmanMap3(gym.Env):
         self.enemies = []
         self.move_enemies=[]
 
-        self.move_enemies.append(YellowEnemy(2, 2, 3))  # lane1
-        self.move_enemies.append(YellowEnemy(2, 3, 3))  # lane2
-        self.move_enemies.append(YellowEnemy(4, 4, 4))  # lane3
+        self.move_enemies.append(YellowEnemy(2, 2, 0))  # lane1
+        self.move_enemies.append(YellowEnemy(2, 3, 0))  # lane2
+        self.move_enemies.append(YellowEnemy(4, 4, 1))  # lane3
 
 
         return self.cur_state  # (2,7,7)

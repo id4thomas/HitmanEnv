@@ -164,7 +164,7 @@ class HitmanMap3(gym.Env):
                     e = self.move_enemies[i]
                     #Hitman Caught
                     e_pos=e.pos
-                    if e.check_range(self.cur_loc[0], self.cur_loc[1],self.cur_state[1]e.pos):
+                    if e.check_range(self.cur_loc[0], self.cur_loc[1],self.cur_state[1][e_pos[0],e_pos[1]]):
                         done = True
                         reward = -1
                         break
@@ -188,8 +188,8 @@ class HitmanMap3(gym.Env):
                     r_legal2 = (next_moved[0] + self.dr[m_e.dir])  < 0
                     c_legal1 = (next_moved[1] + self.dc[m_e.dir])  >= 7
                     c_legal2 = (next_moved[1] + self.dc[m_e.dir])  < 0
-                    conn="{0:4b}".format(int(self.cur_state[1]moved))[-4:]
-                    oob = (self.cur_state[0]next_moved=='-1')
+                    conn="{0:4b}".format(int(self.cur_state[1][moved[0],moved[1]]))[-4:]
+                    oob = (self.cur_state[0][next_moved[0],next_moved[1]]=='-1')
                     not_conn=conn[m_e.dir]!='1'
                     illegal = r_legal1 | r_legal2 | c_legal1 | c_legal2 | not_conn | oob
 
@@ -198,15 +198,15 @@ class HitmanMap3(gym.Env):
                         new_dir={0:1,1:0,2:3,3:2}.get(m_e.dir)
                         m_e.dir=new_dir
                         #update map
-                        self.cur_state[0]prev_pos='1'
-                        self.cur_state[0]moved=str(3+self.dir)
+                        self.cur_state[0][prev_pos[0],prev_pos[1]]='1'
+                        self.cur_state[0][moved[0],moved[1]]=str(3+self.dir)
 
                 # Check Again
                 for i in range(len(self.move_enemies)):
                     e = self.move_enemies[i]
                     #Hitman Caught
                     e_pos=e.pos
-                    if e.check_range(self.cur_loc[0], self.cur_loc[1],self.cur_state[1]e.pos):
+                    if e.check_range(self.cur_loc[0], self.cur_loc[1],self.cur_state[1][e_pos[0],e_pos[1]):
                         done = True
                         reward = -1
                         break

@@ -111,9 +111,9 @@ class HitmanMap3(gym.Env):
         c_legal2 = (self.cur_loc[1] + self.dc[action]) < 0
         illegal = r_legal1 | r_legal2 | c_legal1 | c_legal2
         if illegal:
+            #Out of given Bound
             done = True
             reward = -1
-            #print("Illegal Move")
         else:
             # move hitman (Edit cur_loc)
             prev_r = self.cur_loc[0]
@@ -126,15 +126,17 @@ class HitmanMap3(gym.Env):
             reward = 0
             done = False
 
-            # 1-check goal
+            # 1-check goal reached
             if self.cur_loc[0] == self.goal_loc[0] and self.cur_loc[1] == self.goal_loc[1]:
                 reward = 1
+                # move hitman
+                self.cur_state[0][prev_r, prev_c] = 1
+                self.cur_state[0][self.cur_loc[0], self.cur_loc[1]] = 0
                 done = True
                 #print('GOAL REACHED')
             # 2-check out of bounds (-1)
             elif self.cur_state[0][self.cur_loc[0], self.cur_loc[1]] < 0:
                 reward = -1
-                #print("OOB!")
                 done = True
             # 3-perform moves
             else:
@@ -157,9 +159,8 @@ class HitmanMap3(gym.Env):
                     self.enemies.remove(c)
 
                 # Moving Enemies
-                # Check caught
+                # Check if moving enemies caught
                 caught = []
-                
                 for i in range(len(self.move_enemies)):
                     e = self.move_enemies[i]
                     #Hitman Caught
@@ -175,7 +176,7 @@ class HitmanMap3(gym.Env):
                 for c in caught:
                     self.move_enemies.remove(c)
 
-                #Move Enemies & Check after moving
+                #Move Enemies & Check if turning around
                 for m_e in self.move_enemies:
                     #Move
                     prev_pos=m_e.pos
@@ -196,31 +197,22 @@ class HitmanMap3(gym.Env):
                     #update map
                     self.cur_state[0][prev_pos[0],prev_pos[1]]=1.
                     
+                    #turn around
                     if illegal:
-                        #turn around
                         new_dir={0:1,1:0,2:3,3:2}.get(m_e.dir)
                         m_e.dir=new_dir
+                        #Update Mape
                         self.cur_state[0][moved[0],moved[1]]=3+m_e.dir
                         
-                        #check again
+                        #check if hitman caught after turning
                         if e.check_range(self.cur_loc[0], self.cur_loc[1],self.cur_state[1][moved[0],moved[1]]):
                             done = True
                             reward = -1
                             break
                     else:
+                        #Update Map
                         self.cur_state[0][moved[0],moved[1]]=3+m_e.dir
 
-                # Check Again
-                '''
-                for i in range(len(self.move_enemies)):
-                    e = self.move_enemies[i]
-                    #Hitman Caught
-                    e_pos=e.pos
-                    if e.check_range(self.cur_loc[0], self.cur_loc[1],self.cur_state[1][e_pos[0],e_pos[1]]):
-                        done = True
-                        reward = -1
-                        break
-                '''
                 # move hitman
                 self.cur_state[0][prev_r, prev_c] = 1
                 self.cur_state[0][self.cur_loc[0], self.cur_loc[1]] = 0
@@ -245,9 +237,7 @@ class HitmanMap3(gym.Env):
         # Reset Enemies
         self.enemies = []
         self.move_enemies=[]
-        # self.enemies.append(YellowEnemy(2, 2, 3, self.cur_state[1][2,2]))  # lane1
-        # self.enemies.append(YellowEnemy(2, 3, 3, self.cur_state[1][2,3]))  # lane2
-        # self.enemies.append(YellowEnemy(4, 4, 4, self.cur_state[1][4,4]))  # lane3
+
         self.move_enemies.append(YellowEnemy(2, 2, 3))  # lane1
         self.move_enemies.append(YellowEnemy(2, 3, 3))  # lane2
         self.move_enemies.append(YellowEnemy(4, 4, 4))  # lane3

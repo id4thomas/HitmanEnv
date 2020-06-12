@@ -25,7 +25,7 @@ class BlueEnemy:
 
 #Moving Enemy
 class YellowEnemy:
-    def __init__(self, r, c, dir, conn):
+    def __init__(self, r, c, dir):
         # direction
         # location
         self.pos = [r, c]

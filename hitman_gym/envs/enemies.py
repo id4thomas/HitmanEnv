@@ -29,7 +29,7 @@ class YellowEnemy:
         # direction
         # location
         self.pos = [r, c]
-        self.dir = dir - 3
+        self.dir = dir
         #self.conn = "{0:4b}".format(int(conn))[-4:]
         #print("conn str: {} conn {}".format(conn,self.conn))
         # Up,down,left,right

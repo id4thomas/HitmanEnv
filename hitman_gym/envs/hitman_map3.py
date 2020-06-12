@@ -199,9 +199,15 @@ class HitmanMap3(gym.Env):
                         m_e.dir=new_dir
                         #update map
                         self.cur_state[0][prev_pos[0],prev_pos[1]]='1'
-                        self.cur_state[0][moved[0],moved[1]]=str(3+self.dir)
-
+                        self.cur_state[0][moved[0],moved[1]]=str(3+m_e.dir)
+                        
+                        #check again
+                        if e.check_range(self.cur_loc[0], self.cur_loc[1],self.cur_state[1][moved[0],moved[1]]):
+                            done = True
+                            reward = -1
+                            break
                 # Check Again
+                '''
                 for i in range(len(self.move_enemies)):
                     e = self.move_enemies[i]
                     #Hitman Caught
@@ -210,6 +216,7 @@ class HitmanMap3(gym.Env):
                         done = True
                         reward = -1
                         break
+                '''
                 # move hitman
                 self.cur_state[0][prev_r, prev_c] = 1
                 self.cur_state[0][self.cur_loc[0], self.cur_loc[1]] = 0

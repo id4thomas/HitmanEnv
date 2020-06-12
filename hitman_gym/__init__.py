@@ -9,3 +9,8 @@ register(
     id='hitman-v1',
     entry_point='hitman_gym.envs:HitmanMap2',
 )
+
+register(
+    id='hitman-v2',
+    entry_point='hitman_gym.envs:HitmanMap3',
+)

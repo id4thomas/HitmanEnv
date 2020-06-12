@@ -101,7 +101,7 @@ yellow_1={
     ],
   }
 #yellow 2: 7~10
-yellow_1={
+yellow_2={
   #hitman&enemy location
   # >=0 : Path Exist
 	#0: Hitman

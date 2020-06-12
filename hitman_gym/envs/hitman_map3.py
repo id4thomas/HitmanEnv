@@ -206,7 +206,7 @@ class HitmanMap3(gym.Env):
                     e = self.move_enemies[i]
                     #Hitman Caught
                     e_pos=e.pos
-                    if e.check_range(self.cur_loc[0], self.cur_loc[1],self.cur_state[1][e_pos[0],e_pos[1]):
+                    if e.check_range(self.cur_loc[0], self.cur_loc[1],self.cur_state[1][e_pos[0],e_pos[1]]):
                         done = True
                         reward = -1
                         break

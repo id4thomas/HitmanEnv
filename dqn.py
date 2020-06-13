@@ -138,7 +138,9 @@ for ep_i in range(100000):
         action = main_network.predict(obs)  # my
 
         obs, reward, done, info = env.step(action)
-
+        if step_count>100:
+            done=True
+            reward=-1
         # 추가 리워드
         # reward = 00
         '''if reward == 0:

@@ -13,10 +13,11 @@ import gym
 import hitman_gym
 
 env = gym.make('hitman-v0')
+ep_reward = 0
 
 while not done:
   obs, reward, done, info = env.step(env.action_space.sample())
-  ep_reward += sum(reward_n)
+  ep_reward += sum(reward)
 
 env.close()
 ```

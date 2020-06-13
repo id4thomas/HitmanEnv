@@ -141,7 +141,10 @@ class HitmanMap4(gym.Env):
         r_legal2 = (self.cur_loc[0] + self.dr[action]) < 0
         c_legal1 = (self.cur_loc[1] + self.dc[action]) >= 7
         c_legal2 = (self.cur_loc[1] + self.dc[action]) < 0
-        illegal = r_legal1 | r_legal2 | c_legal1 | c_legal2
+        #check if connected move
+        conn = "{0:4b}".format(int(self.cur_state[1][self.cur_loc[0],self.cur_loc[1]]))[-4:]
+        not_conn = conn[action] != '1'
+        illegal = r_legal1 | r_legal2 | c_legal1 | c_legal2 | not_conn
         if illegal:
             # Out of given Bound
             done = True

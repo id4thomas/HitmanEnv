@@ -73,7 +73,7 @@ yellow_yr = {
         [-1., -1., -1., -1., -1., -1., -1.],
     ],
 }
-
+#sol: ans_path = [3,1,1,3,3,2,2,3,2,3,3,0,0,3]
 
 # Blue enemy
 class HitmanMap3(gym.Env):
@@ -112,7 +112,10 @@ class HitmanMap3(gym.Env):
         r_legal2 = (self.cur_loc[0] + self.dr[action]) < 0
         c_legal1 = (self.cur_loc[1] + self.dc[action]) >= 7
         c_legal2 = (self.cur_loc[1] + self.dc[action]) < 0
-        illegal = r_legal1 | r_legal2 | c_legal1 | c_legal2
+        #check if connected move
+        conn = "{0:4b}".format(int(self.cur_state[1][self.cur_loc[0],self.cur_loc[1]]))[-4:]
+        not_conn = conn[action] != '1'
+        illegal = r_legal1 | r_legal2 | c_legal1 | c_legal2 | not_conn
         if illegal:
             # Out of given Bound
             done = True

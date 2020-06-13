@@ -209,7 +209,7 @@ class HitmanMap1(gym.Env):
         hitman_loc = self.cur_loc.copy()
         state = self.cur_state.copy()
 
-        return state, reward, done, hitman_loc
+        return state, reward, done, [hitman_loc, self.goal_loc]
 
     def reset(self):
         # Reset Map

@@ -74,9 +74,37 @@ yellow_yr = {
     ],
 }
 
+# sol: [2,3,2,0,3,0,3,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,2,2,0,2,0,3,3,3,2,2,2,3,3,3,2,2,2,3,3,2,1,1,2,2,]
+yellow2 = {
+    "loc": [
+        [-1., -1., -1., -1., -1., -1., -1.],
+        [-1., -1., 1., 1., 1., 1., -1.],
+        [-1., -1., 1., 1., 9., 1., -1.],
+        [-1., 2., 1., 1., 10., 1., -1.],
+        [-1., 1., 4., 10., 1., 1., -1.],
+        [-1., 1., 1., 1., 0., 1., -1.],
+        [-1., -1., -1., -1., -1., -1., -1.],
+    ],
+    # 1~16 : 4^2
+    # 0: No connection
+    # 1000: Up
+    # 0100: Down
+    # 0010: Left
+    # 0001: Right
+    "conn": [
+        [-1., -1., -1., -1., -1., -1., -1.],
+        [-1., -1., 5., 7., 3., 2., -1.],
+        [-1., -1., 9., 15., 3., 2., -1.],
+        [-1., 5., 3., 11., 7., 6., -1.],
+        [-1., 13., 7., 7., 10., 12., -1.],
+        [-1., 9., 11., 11., 2., 8., -1.],
+        [-1., -1., -1., -1., -1., -1., -1.],
+    ],
+}
+
 
 # Blue enemy
-class HitmanMap3(gym.Env):
+class HitmanMap4(gym.Env):
     metadata = {'render.modes': ['human']}
 
     # Actions
@@ -98,7 +126,8 @@ class HitmanMap3(gym.Env):
         self.dc = [0, 0, -1, 1]
 
         self.enemies = []
-        self.goal_loc = [3, 5]
+        self.goal_loc = [3, 5]  # yellow map 1
+        # self.goal_loc=[3,1] #yellow map 2
 
     def can_move(self, enemy):
         a = enemy.dir
@@ -206,7 +235,7 @@ class HitmanMap3(gym.Env):
                         new_dir = {0: 1, 1: 0, 2: 3, 3: 2}.get(m_e.dir)
                         m_e.dir = new_dir
                         # Update Mape
-                        self.cur_state[0][moved[0], moved[1]] = 3 + m_e.dir
+                        self.cur_state[0][moved[0], moved[1]] = 7 + m_e.dir
 
                         # check if hitman caught after turning
                         if e.check_range(self.cur_loc[0], self.cur_loc[1], self.cur_state[1][moved[0], moved[1]]):
@@ -214,8 +243,8 @@ class HitmanMap3(gym.Env):
                             reward = -1
                             break
                     else:
-                        # Update Map
-                        self.cur_state[0][moved[0], moved[1]] = 3 + m_e.dir
+                        # Update Map: Moving base: 7
+                        self.cur_state[0][moved[0], moved[1]] = 7 + m_e.dir
 
                 # move hitman
                 self.cur_state[0][prev_r, prev_c] = 1
@@ -229,8 +258,8 @@ class HitmanMap3(gym.Env):
 
     def reset(self):
         # Reset Map
-        # MAP=yellow_jw
         MAP = yellow_yr
+        # MAP=yellow_yr
         loc = np.array(MAP['loc'])  # (7,7)
         conn = np.array(MAP['conn'])  # (7,7)
         # print('loc', loc.shape)
@@ -240,6 +269,7 @@ class HitmanMap3(gym.Env):
 
         # Reset Positions
         self.cur_loc = [3, 1]
+        # self.cur_loc=[5,4] #yellow map 2
 
         # Reset Enemies
         self.enemies = []
@@ -249,6 +279,13 @@ class HitmanMap3(gym.Env):
         self.move_enemies.append(YellowEnemy(2, 3, 0))  # lane2
         self.move_enemies.append(YellowEnemy(4, 4, 1))  # lane3
 
+        # yellow map 2
+        '''
+        self.enemies.append(BlueEnemy(4, 2, 7, self.cur_state[1][4,2]))
+        self.move_enemies.append(YellowEnemy(2, 4, 2))  # lane1
+        self.move_enemies.append(YellowEnemy(3, 4, 3))  # lane2
+        self.move_enemies.append(YellowEnemy(4, 3, 3))  # lane3
+        '''
         return self.cur_state  # (2,7,7)
 
     '''

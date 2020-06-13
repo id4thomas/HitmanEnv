@@ -6,6 +6,8 @@ import numpy as np
 import random
 from collections import defaultdict
 
+import argparse
+
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
@@ -105,26 +107,35 @@ def replay_memory_append(replay_memory, memory):
     if len(replay_memory) > 10000:
         del replay_memory[0]
 
+if __name__ == '__main__':
 
-# main
+    # main
+    parser = argparse.ArgumentParser(description='DQN Training for Hitman GO')
+    parser.add_argument('--num_episodes', type=int, default=100000,
+                    help='Number of Training Episodes')
+    parser.add_argument('--map', default='simple',
+                    help='Map ID')
 
-env = gym.make('hitman-v4')#blue enemy
+    args = parser.parse_args()
 
-replay_memory = list()
+    env = gym.make('hitman-v4')#blue enemy
 
-batch_size = 32
-gamma = 0.95
+    replay_memory = list()
+    num_episodes=args.num_episodes
+    batch_size = 32
+    gamma = 0.95
 
-action_size = 4
+    action_size = 4
 
-main_network = DuelingDQN(env)
-target_network = DuelingDQN(env)
-map_id='blue'
+    main_network = DuelingDQN(env)
+    target_network = DuelingDQN(env)
 
-if not os.path.exists('weight_'+map_id):
+    map_id=args.map_id
+
+    if not os.path.exists('weight_'+map_id):
     os.makedirs('weight_'+map_id)
 
-for ep_i in range(100000):
+    for ep_i in range(num_episodes):
     done = False
     ep_reward = 0
     env.seed(ep_i)

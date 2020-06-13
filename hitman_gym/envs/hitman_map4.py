@@ -160,6 +160,7 @@ class HitmanMap4(gym.Env):
                 self.cur_state[0][prev_r, prev_c] = 1
                 self.cur_state[0][self.cur_loc[0], self.cur_loc[1]] = 0
                 done = True
+                print('GOAL REACHED',self.goal_loc)
                 #print('GOAL REACHED')
             # 2-check out of bounds (-1)
             elif self.cur_state[0][self.cur_loc[0], self.cur_loc[1]] < 0:

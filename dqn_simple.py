@@ -108,7 +108,7 @@ def replay_memory_append(replay_memory, memory):
 
 # main
 
-env = gym.make('hitman-v1')#blue enemy
+env = gym.make('hitman-v0')#blue enemy
 
 replay_memory = list()
 
@@ -168,6 +168,6 @@ for ep_i in range(100000):
 
     # save model
     if ep_i % 50 == 0 and ep_i != 0:
-        main_network.save_model('./weight/model_ep{}.h5'.format(ep_i))
+        main_network.save_model('./weight_simple/model_ep{}.h5'.format(ep_i))
 
 ##

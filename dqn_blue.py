@@ -107,8 +107,8 @@ def replay_memory_append(replay_memory, memory):
 
 
 # main
-#yellow enemy
-env = gym.make('hitman-v2')
+
+env = gym.make('hitman-v1')#blue enemy
 
 replay_memory = list()
 
@@ -138,7 +138,6 @@ for ep_i in range(100000):
         action = main_network.predict(obs)  # my
 
         obs, reward, done, info = env.step(action)
-
         if step_count>100:
             done=True
             reward=-1
@@ -169,6 +168,6 @@ for ep_i in range(100000):
 
     # save model
     if ep_i % 50 == 0 and ep_i != 0:
-        main_network.save_model('./weight_yellow/model_ep{}.h5'.format(ep_i))
+        main_network.save_model('./weight_blue/model_ep{}.h5'.format(ep_i))
 
 ##

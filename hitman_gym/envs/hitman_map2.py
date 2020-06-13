@@ -88,7 +88,7 @@ class HitmanMap2(gym.Env):
             if self.cur_loc[0] == self.goal_loc[0] and self.cur_loc[1] == self.goal_loc[1]:
                 reward = 1
                 done = True
-                print('GOAL REACHED')
+                print('GOAL REACHED',self.goal_loc)
             # 2-check out of bounds
             elif self.cur_state[0][self.cur_loc[0], self.cur_loc[1]] < 0:
                 reward = -1
@@ -104,7 +104,7 @@ class HitmanMap2(gym.Env):
                         done = True
                         reward = -1
                         #print('Hitman Caught!', len(self.enemies))
-                        print(e.pos)
+                        #print(e.pos)
                         break
                     # removed enemy
                     elif e.check_caught(self.cur_loc[0], self.cur_loc[1]):

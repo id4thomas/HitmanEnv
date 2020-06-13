@@ -146,7 +146,7 @@ for ep_i in range(100000):
         # 추가 리워드
         # reward = 00
         if reward == 0:
-            reward = 0.05
+            reward = -0.05
 
         if reward == 1:
             reward = 10

@@ -136,56 +136,56 @@ if __name__ == '__main__':
     map_id=args.map_id
 
     if not os.path.exists('weight_'+map_id):
-    os.makedirs('weight_'+map_id)
+        os.makedirs('weight_'+map_id)
 
     for ep_i in range(num_episodes):
-    done = False
-    ep_reward = 0
-    env.seed(ep_i)
-    obs = env.reset(map_id)
+        done = False
+        ep_reward = 0
+        env.seed(ep_i)
+        obs = env.reset(map_id)
 
-    cnt = 0
+        cnt = 0
 
-    step_count = 0
-    previous_memory = None
-    round_loss = list()
-    path=[env.cur_loc.copy()]
-    while not done:
-        obs = np.transpose(obs, (1, 2, 0))
-        obs = np.reshape(obs, (1, 7, 7, 2))
+        step_count = 0
+        previous_memory = None
+        round_loss = list()
+        path=[env.cur_loc.copy()]
+        while not done:
+            obs = np.transpose(obs, (1, 2, 0))
+            obs = np.reshape(obs, (1, 7, 7, 2))
 
-        action = main_network.predict(obs)  # my
+            action = main_network.predict(obs)  # my
 
-        obs, reward, done, info = env.step(action)
-        if step_count>100:
-            done=True
-            reward=-1
-        path.append(info[0])
-        # 추가 리워드
-        # reward = 00
-        if reward == 0:
-            reward = -0.05
+            obs, reward, done, info = env.step(action)
+            if step_count>100:
+                done=True
+                reward=-1
+            path.append(info[0])
+            # 추가 리워드
+            # reward = 00
+            if reward == 0:
+                reward = -0.05
 
-        if reward == 1:
-            reward = 10
-            #print("Cong")
+            if reward == 1:
+                reward = 10
+                #print("Cong")
 
-        if previous_memory is not None and not previous_memory[3]:
-            replay_memory_append(replay_memory, [previous_memory[0], previous_memory[1], previous_memory[2], obs, previous_memory[3]])
+            if previous_memory is not None and not previous_memory[3]:
+                replay_memory_append(replay_memory, [previous_memory[0], previous_memory[1], previous_memory[2], obs, previous_memory[3]])
 
-        previous_memory = [obs, action, reward, done]
+            previous_memory = [obs, action, reward, done]
 
-        cnt += reward
+            cnt += reward
 
-        loss = train_minibatch(main_network, target_network)
-        round_loss.append(loss)
-        step_count += 1
+            loss = train_minibatch(main_network, target_network)
+            round_loss.append(loss)
+            step_count += 1
 
-    print('Episode #{} total reward: {} step: {} epsilon {} path{}: '.format(ep_i, cnt, step_count, main_network.get_epsilon(),path))
-    copy_network(main_network, target_network)
+        print('Episode #{} total reward: {} step: {} epsilon {} path{}: '.format(ep_i, cnt, step_count, main_network.get_epsilon(),path))
+        copy_network(main_network, target_network)
 
-    main_network.update_epsilon(args.min_eps)
+        main_network.update_epsilon(args.min_eps)
 
-    # save model
-    if ep_i % 50 == 0 and ep_i != 0:
-        main_network.save_model('./weight_'+map_id+'/model_ep{}.h5'.format(ep_i))
+        # save model
+        if ep_i % 50 == 0 and ep_i != 0:
+            main_network.save_model('./weight_'+map_id+'/model_ep{}.h5'.format(ep_i))

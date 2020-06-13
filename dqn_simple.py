@@ -145,12 +145,12 @@ for ep_i in range(100000):
         path.append(info[0])
         # 추가 리워드
         # reward = 00
-        '''if reward == 0:
+        if reward == 0:
             reward = 0.05
 
         if reward == 1:
             reward = 10
-            print("Cong")'''
+            #print("Cong")
 
         if previous_memory is not None and not previous_memory[3]:
             replay_memory_append(replay_memory, [previous_memory[0], previous_memory[1], previous_memory[2], obs, previous_memory[3]])
@@ -170,6 +170,6 @@ for ep_i in range(100000):
 
     # save model
     if ep_i % 50 == 0 and ep_i != 0:
-        main_network.save_model('./weight_blue/model_ep{}.h5'.format(ep_i))
+        main_network.save_model('./weight_simple/model_ep{}.h5'.format(ep_i))
 
 ##

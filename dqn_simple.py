@@ -108,7 +108,7 @@ def replay_memory_append(replay_memory, memory):
 
 # main
 
-env = gym.make('hitman-v0')#simple
+env = gym.make('hitman-v0')#blue enemy
 
 replay_memory = list()
 
@@ -131,6 +131,7 @@ for ep_i in range(100000):
     step_count = 0
     previous_memory = None
     round_loss = list()
+    path=[obs.cur_loc.copy()]
     while not done:
         obs = np.transpose(obs, (1, 2, 0))
         obs = np.reshape(obs, (1, 7, 7, 2))
@@ -141,6 +142,7 @@ for ep_i in range(100000):
         if step_count>100:
             done=True
             reward=-1
+        path.append(info[0])
         # 추가 리워드
         # reward = 00
         '''if reward == 0:
@@ -161,13 +163,13 @@ for ep_i in range(100000):
         round_loss.append(loss)
         step_count += 1
 
-    print('Episode #{} total reward: {} step: {} epsilon {}: '.format(ep_i, cnt, step_count, main_network.get_epsilon()))
+    print('Episode #{} total reward: {} step: {} epsilon {} path{}: '.format(ep_i, cnt, step_count, main_network.get_epsilon(),path))
     copy_network(main_network, target_network)
 
     main_network.update_epsilon()
 
     # save model
     if ep_i % 50 == 0 and ep_i != 0:
-        main_network.save_model('./weight_simple/model_ep{}.h5'.format(ep_i))
+        main_network.save_model('./weight_blue/model_ep{}.h5'.format(ep_i))
 
 ##

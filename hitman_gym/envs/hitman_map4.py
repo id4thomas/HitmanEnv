@@ -102,7 +102,7 @@ yellow2={
     ],
 }
 # Blue enemy
-class HitmanMap3(gym.Env):
+class HitmanMap4(gym.Env):
     metadata = {'render.modes': ['human']}
 
     # Actions

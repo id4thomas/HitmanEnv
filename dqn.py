@@ -101,10 +101,10 @@ def copy_network(main_network, target_network):
     target_network.model.set_weights(main_network.model.get_weights())
 
 
-def replay_memory_append(replay_memory, memory):
+def replay_memory_append(replay_memory, memory, max_mem):
     replay_memory.append(memory)
 
-    if len(replay_memory) > 10000:
+    if len(replay_memory) > max_mem:
         del replay_memory[0]
 
 if __name__ == '__main__':
@@ -115,6 +115,8 @@ if __name__ == '__main__':
                     help='Number of Training Episodes')
     parser.add_argument('--min_eps', type=float, default=0.01,
                     help='Minimum Epsilon')
+    parser.add_argument('--max_mem', type=int, default=5000,
+                    help='Max Replay memory size')
 
     parser.add_argument('--map', default='simple',
                     help='Map ID')
@@ -171,7 +173,7 @@ if __name__ == '__main__':
                 #print("Cong")
 
             if previous_memory is not None and not previous_memory[3]:
-                replay_memory_append(replay_memory, [previous_memory[0], previous_memory[1], previous_memory[2], obs, previous_memory[3]])
+                replay_memory_append(replay_memory, [previous_memory[0], previous_memory[1], previous_memory[2], obs, previous_memory[3]],arg.max_mem)
 
             previous_memory = [obs, action, reward, done]
 

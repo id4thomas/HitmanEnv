@@ -13,6 +13,7 @@ import gym
 import hitman_gym
 
 env = gym.make('hitman-v0')
+done = False
 ep_reward = 0
 
 while not done:

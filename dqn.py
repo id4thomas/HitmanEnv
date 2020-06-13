@@ -22,7 +22,7 @@ class DuelingDQN:
         self.hideen_size = 32
         self.learning_rate = 5e-4
 
-        self.e = 0.01
+        self.e = 1
 
         self.inputs = tf.keras.layers.Input(shape=(7, 7, 2,))
 
@@ -56,10 +56,10 @@ class DuelingDQN:
 
         return a
 
-    def update_epsilon(self):
+    def update_epsilon(self,min_eps):
         self.e = self.e * 0.95
-        if self.e < 0.01:
-            self.e = 0.01
+        if self.e < min_eps:
+            self.e = min_eps
 
     def get_epsilon(self):
         return self.e
@@ -113,6 +113,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='DQN Training for Hitman GO')
     parser.add_argument('--num_episodes', type=int, default=100000,
                     help='Number of Training Episodes')
+    parser.add_argument('--min_eps', type=float, default=0.01,
+                    help='Minimum Epsilon')
+
     parser.add_argument('--map', default='simple',
                     help='Map ID')
 
@@ -181,7 +184,7 @@ if __name__ == '__main__':
     print('Episode #{} total reward: {} step: {} epsilon {} path{}: '.format(ep_i, cnt, step_count, main_network.get_epsilon(),path))
     copy_network(main_network, target_network)
 
-    main_network.update_epsilon()
+    main_network.update_epsilon(args.min_eps)
 
     # save model
     if ep_i % 50 == 0 and ep_i != 0:

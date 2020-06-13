@@ -20,7 +20,7 @@ class DuelingDQN:
         self.hideen_size = 32
         self.learning_rate = 5e-4
 
-        self.e = 1
+        self.e = 0.01
 
         self.inputs = tf.keras.layers.Input(shape=(7, 7, 2,))
 
@@ -108,7 +108,7 @@ def replay_memory_append(replay_memory, memory):
 
 # main
 
-env = gym.make('hitman-v1')#blue enemy
+env = gym.make('hitman-v4')#blue enemy
 
 replay_memory = list()
 
@@ -119,19 +119,23 @@ action_size = 4
 
 main_network = DuelingDQN(env)
 target_network = DuelingDQN(env)
+map_id='blue'
+
+if not os.path.exists('weight_'+map_id):
+    os.makedirs('weight_'+map_id)
 
 for ep_i in range(100000):
     done = False
     ep_reward = 0
     env.seed(ep_i)
-    obs = env.reset()
+    obs = env.reset(map_id)
 
     cnt = 0
 
     step_count = 0
     previous_memory = None
-    path = [[1, 1]]
     round_loss = list()
+    path=[env.cur_loc.copy()]
     while not done:
         obs = np.transpose(obs, (1, 2, 0))
         obs = np.reshape(obs, (1, 7, 7, 2))
@@ -139,17 +143,18 @@ for ep_i in range(100000):
         action = main_network.predict(obs)  # my
 
         obs, reward, done, info = env.step(action)
-
+        if step_count>100:
+            done=True
+            reward=-1
         path.append(info[0])
-
         # 추가 리워드
         # reward = 00
-        '''if reward == 0:
-            reward = 0.05
+        if reward == 0:
+            reward = -0.05
 
         if reward == 1:
             reward = 10
-            print("Cong")'''
+            #print("Cong")
 
         if previous_memory is not None and not previous_memory[3]:
             replay_memory_append(replay_memory, [previous_memory[0], previous_memory[1], previous_memory[2], obs, previous_memory[3]])
@@ -162,13 +167,11 @@ for ep_i in range(100000):
         round_loss.append(loss)
         step_count += 1
 
-    print('Episode #{} total reward: {} step: {} path {}: '.format(ep_i, cnt, step_count, path))
+    print('Episode #{} total reward: {} step: {} epsilon {} path{}: '.format(ep_i, cnt, step_count, main_network.get_epsilon(),path))
     copy_network(main_network, target_network)
 
     main_network.update_epsilon()
 
     # save model
     if ep_i % 50 == 0 and ep_i != 0:
-        main_network.save_model('./weight/model_ep{}.h5'.format(ep_i))
-
-##
+        main_network.save_model('./weight_'+map_id+'/model_ep{}.h5'.format(ep_i))

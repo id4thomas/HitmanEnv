@@ -145,13 +145,13 @@ class HitmanMap2(gym.Env):
 
         # Reset Enemies
         self.enemies = []
-        self.enemies.append(BlueEnemy(4, 1, 6, self.cur_state[1][4, 1]))  # step 3
-        self.enemies.append(BlueEnemy(3, 4, 5, self.cur_state[1][3, 4]))  # step 7
-        self.enemies.append(BlueEnemy(3, 3, 5, self.cur_state[1][3, 3]))  # step 8
-        self.enemies.append(BlueEnemy(3, 2, 3, self.cur_state[1][3, 2]))  # step 9
-        self.enemies.append(BlueEnemy(2, 3, 5, self.cur_state[1][2, 3]))  # step 11
-        self.enemies.append(BlueEnemy(2, 2, 3, self.cur_state[1][2, 2]))  # step 13
-        self.enemies.append(BlueEnemy(1, 4, 4, self.cur_state[1][1, 4]))  # step 15
+        self.enemies.append(BlueEnemy(4, 1, 6, self.cur_state[1][4, 1]-3))  # step 3
+        self.enemies.append(BlueEnemy(3, 4, 5, self.cur_state[1][3, 4]-3))  # step 7
+        self.enemies.append(BlueEnemy(3, 3, 5, self.cur_state[1][3, 3]-3))  # step 8
+        self.enemies.append(BlueEnemy(3, 2, 3, self.cur_state[1][3, 2]-3))  # step 9
+        self.enemies.append(BlueEnemy(2, 3, 5, self.cur_state[1][2, 3]-3))  # step 11
+        self.enemies.append(BlueEnemy(2, 2, 3, self.cur_state[1][2, 2]-3))  # step 13
+        self.enemies.append(BlueEnemy(1, 4, 4, self.cur_state[1][1, 4]-3))  # step 15
 
         return self.cur_state  # (2,7,7)
 

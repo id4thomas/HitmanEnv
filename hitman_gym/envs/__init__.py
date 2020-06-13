@@ -9,3 +9,6 @@ from hitman_gym.envs.hitman_map3 import HitmanMap3
 
 #Agent Yellow MAP YR
 from hitman_gym.envs.hitman_map4 import HitmanMap4
+
+#Cleanup Version
+from hitman_gym.envs.hitman import HitmanGO

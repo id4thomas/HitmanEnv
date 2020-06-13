@@ -103,7 +103,7 @@ def copy_network(main_network, target_network):
 
 def replay_memory_append(replay_memory, memory, max_mem):
     replay_memory.append(memory)
-
+    #original 10000
     if len(replay_memory) > max_mem:
         del replay_memory[0]
 
@@ -173,7 +173,7 @@ if __name__ == '__main__':
                 #print("Cong")
 
             if previous_memory is not None and not previous_memory[3]:
-                replay_memory_append(replay_memory, [previous_memory[0], previous_memory[1], previous_memory[2], obs, previous_memory[3]],arg.max_mem)
+                replay_memory_append(replay_memory, [previous_memory[0], previous_memory[1], previous_memory[2], obs, previous_memory[3]],args.max_mem)
 
             previous_memory = [obs, action, reward, done]
 

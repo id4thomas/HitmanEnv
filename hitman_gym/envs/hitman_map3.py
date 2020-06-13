@@ -217,13 +217,13 @@ class HitmanMap3(gym.Env):
                 self.cur_state[0][prev_r, prev_c] = 1
                 self.cur_state[0][self.cur_loc[0], self.cur_loc[1]] = 0
 
-        return self.cur_state, reward, done, {}
+        return self.cur_state, reward, done, [self.cur_loc, self.goal_loc]
         # return np.array(self.state), reward, done, {}
 
     def reset(self):
         # Reset Map
-        MAP=yellow_jw
-        # MAP=yellow_yr
+        # MAP=yellow_jw
+        MAP=yellow_yr
         loc = np.array(MAP['loc'])  # (7,7)
         conn = np.array(MAP['conn'])  # (7,7)
         #print('loc', loc.shape)

@@ -20,7 +20,7 @@ class DuelingDQN:
         self.hideen_size = 32
         self.learning_rate = 5e-4
 
-        self.e = 0.01
+        self.e = 1
 
         self.inputs = tf.keras.layers.Input(shape=(7, 7, 2,))
 
@@ -130,6 +130,7 @@ for ep_i in range(100000):
 
     step_count = 0
     previous_memory = None
+    path = [[1, 1]]
     round_loss = list()
     while not done:
         obs = np.transpose(obs, (1, 2, 0))
@@ -138,6 +139,8 @@ for ep_i in range(100000):
         action = main_network.predict(obs)  # my
 
         obs, reward, done, info = env.step(action)
+
+        path.append(info[0])
 
         # 추가 리워드
         # reward = 00
@@ -159,7 +162,7 @@ for ep_i in range(100000):
         round_loss.append(loss)
         step_count += 1
 
-    print('Episode #{} total reward: {} step: {} epsilon {}: '.format(ep_i, cnt, step_count, main_network.get_epsilon()))
+    print('Episode #{} total reward: {} step: {} path {}: '.format(ep_i, cnt, step_count, path))
     copy_network(main_network, target_network)
 
     main_network.update_epsilon()

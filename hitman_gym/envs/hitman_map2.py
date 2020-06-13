@@ -117,7 +117,7 @@ class HitmanMap2(gym.Env):
                 self.cur_state[0][prev_r, prev_c] = 1
                 self.cur_state[0][self.cur_loc[0], self.cur_loc[1]] = 0
 
-        return self.cur_state, reward, done, {}
+        return self.cur_state, reward, done, [self.cur_loc, self.goal_loc]
         # return np.array(self.state), reward, done, {}
 
     def reset(self):

@@ -78,6 +78,9 @@ class HitmanMap2(gym.Env):
             done = True
             reward = -1
             # print("Illegal Move")
+            #move hitman
+            self.cur_loc[0] += self.dr[action]
+            self.cur_loc[1] += self.dc[action]
         else:
             # move
             prev_r = self.cur_loc[0]

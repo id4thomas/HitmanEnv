@@ -149,6 +149,9 @@ class HitmanMap4(gym.Env):
             # Out of given Bound
             done = True
             reward = -1
+            #move hitman
+            self.cur_loc[0] += self.dr[action]
+            self.cur_loc[1] += self.dc[action]
         else:
             # move hitman (Edit cur_loc)
             prev_r = self.cur_loc[0]

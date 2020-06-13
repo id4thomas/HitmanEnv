@@ -167,6 +167,9 @@ class HitmanMap1(gym.Env):
         if illegal:
             done = True
             reward = -1
+            #move hitman
+            self.cur_loc[0] += self.dr[action]
+            self.cur_loc[1] += self.dc[action]
         else:
             # move
             prev_r = self.cur_loc[0]

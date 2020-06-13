@@ -131,7 +131,7 @@ for ep_i in range(100000):
     step_count = 0
     previous_memory = None
     round_loss = list()
-    path=[obs.cur_loc.copy()]
+    path=[env.cur_loc.copy()]
     while not done:
         obs = np.transpose(obs, (1, 2, 0))
         obs = np.reshape(obs, (1, 7, 7, 2))

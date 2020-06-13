@@ -72,7 +72,7 @@ class HitmanMap2(gym.Env):
         if illegal:
             done = True
             reward = -1
-            print("Illegal Move")
+            #print("Illegal Move")
         else:
             # move
             prev_r = self.cur_loc[0]
@@ -92,7 +92,7 @@ class HitmanMap2(gym.Env):
             # 2-check out of bounds
             elif self.cur_state[0][self.cur_loc[0], self.cur_loc[1]] < 0:
                 reward = -1
-                print("OOB!")
+                #print("OOB!")
                 done = True
             # 3-perform
             else:
@@ -103,14 +103,14 @@ class HitmanMap2(gym.Env):
                     if e.check_range(self.cur_loc[0], self.cur_loc[1]):
                         done = True
                         reward = -1
-                        print('Hitman Caught!', len(self.enemies))
+                        #print('Hitman Caught!', len(self.enemies))
                         print(e.pos)
                         break
                     # removed enemy
                     elif e.check_caught(self.cur_loc[0], self.cur_loc[1]):
                         caught.append(e)
                 # remove caught enemies
-                print('Caught {} enemies'.format(len(caught)))
+                #print('Caught {} enemies'.format(len(caught)))
                 for c in caught:
                     self.enemies.remove(c)
                 # move hitman
@@ -124,10 +124,10 @@ class HitmanMap2(gym.Env):
         # Reset Map
         loc = np.array(MAP['loc'])  # (7,7)
         conn = np.array(MAP['conn'])  # (7,7)
-        print('loc', loc.shape)
-        print('conn', conn.shape)
+        # print('loc', loc.shape)
+        # print('conn', conn.shape)
         self.cur_state = np.stack([loc, conn], axis=0)
-        print('stacked', self.cur_state.shape)
+        # print('stacked', self.cur_state.shape)
 
         # Reset Positions
         self.cur_loc = [1, 1]

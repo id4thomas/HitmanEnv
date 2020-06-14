@@ -123,7 +123,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    env = gym.make('hitman-v4')#blue enemy
+    env = gym.make('hitman-v5')#blue enemy
 
     replay_memory = list()
     num_episodes=args.num_episodes
@@ -168,14 +168,15 @@ if __name__ == '__main__':
             path.append(info[0])
             # 추가 리워드
             # reward = 00
-            '''
+            
             if reward == 0:
-                reward = -0.05
-            '''
-            '''
+                reward = 0.05
+            
+            
             if reward == 1:
                 reward = 10
                 #print("Cong")
+            '''
             if reward ==-1:
                 reward=-10
             '''

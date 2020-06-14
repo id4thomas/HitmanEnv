@@ -35,7 +35,7 @@ while not done:
 env.close()
 ```
 
-## Usage (hitman-v1 ~ hitman-v4)
+## Usage (hitman-v1 ~ hitman-v3)
 Another versions of Hitman-Go do not need to register environments. By "gym.make" helps you use the hitman-go environments.
 ```python
 import gym

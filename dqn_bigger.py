@@ -28,12 +28,12 @@ class DuelingDQN:
 
         # v (1), advantage (action space) -> aggregation -> Q
 
-        x = tf.keras.layers.Conv2D(8, (3, 3), activation='relu')(self.inputs)  # 7,7,2 -> 5,5,16
+        x = tf.keras.layers.Conv2D(16, (3, 3), activation='relu')(self.inputs)  # 7,7,2 -> 5,5,16
         x = tf.keras.layers.Dropout(0.1)(x)
-        x = tf.keras.layers.Conv2D(8, (3, 3), activation='relu')(x)  # 5,5,16 -> 3,3,16
+        x = tf.keras.layers.Conv2D(16, (3, 3), activation='relu')(x)  # 5,5,16 -> 3,3,16
         x = tf.keras.layers.Dropout(0.1)(x)
         x = tf.keras.layers.Flatten()(x)  # 3,3,16 -> 144
-        x = tf.keras.layers.Dense(16, activation='relu')(x)
+        x = tf.keras.layers.Dense(32, activation='relu')(x)
         x = tf.keras.layers.Dropout(0.1)(x)
         # x = tf.keras.layers.Dense(1 + self.action_size, activation='linear')(x)
         self.q = tf.keras.layers.Dense(self.action_size, activation='linear')(x)
@@ -140,8 +140,8 @@ if __name__ == '__main__':
     maps={1:'simple',2:'blue',3:'yellow'}
     map_id=maps[args.map_id]
 
-    if not os.path.exists('weight_'+map_id):
-        os.makedirs('weight_'+map_id)
+    if not os.path.exists('weight2_'+map_id):
+        os.makedirs('weight2_'+map_id)
 
     save_iter=10
     consc_goal=0
@@ -213,9 +213,4 @@ if __name__ == '__main__':
 
         # save model
         if ep_i % save_iter == 0 and ep_i != 0:
-            main_network.save_model('./weight_'+map_id+'/model_ep{}.h5'.format(ep_i))
-
-        if consc_goal==5:
-            main_network.save_model('./weight_'+map_id+'/final.h5')
-            break
-
+            main_network.save_model('./weight2_'+map_id+'/model_ep{}.h5'.format(ep_i))

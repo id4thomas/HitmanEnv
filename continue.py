@@ -183,9 +183,9 @@ if __name__ == '__main__':
             path.append(info[0])
             # 추가 리워드
             # reward = 00
-            
+            '''
             if reward == 0:
-                reward = -0.05
+                reward = -0.05'''
             
             
             if reward == 1:

@@ -28,7 +28,7 @@ class ACModel():
         #self.actor,self.critic=self.make_model()
         self.actor=self.make_actor()
         self.critic=self.make_critic()
-
+        self.critic,self.actor=self.make_model()
         self.gamma=0.99
 
         #PPO Parameters
@@ -37,6 +37,18 @@ class ACModel():
         self.cliprange=0.2
 
         self.op=tf.keras.optimizers.Adam(learning_rate=self.lr)
+    def make_model(self):
+        in1=tf.keras.layers.Input(shape=(7, 7, 2,))
+        d1=tf.keras.layers.Conv2D(32, (3, 3), activation='relu')(in1)
+        d1=tf.keras.layers.Dropout(0.1)(d1)
+        d2=tf.keras.layers.Conv2D(32, (3, 3), activation='relu')(d1)
+        d2=tf.keras.layers.Dropout(0.1)(d2)
+        d2=tf.keras.layers.Flatten()(d2)
+        d3=tf.keras.layers.Dense(32, activation='relu')(d2)
+        d3 = tf.keras.layers.Dropout(0.1)(d3)
+        s_v = tf.keras.layers.Dense(1, activation='linear')(d3)
+        pi = tf.keras.layers.Dense(self.action_size, activation='softmax')(d3)
+        return s_v,pi
 
     def make_critic(self):
         in1=tf.keras.layers.Input(shape=(7, 7, 2,))
@@ -176,7 +188,7 @@ class PPO():
             v_pred=self.net.critic(s,training=True)
             c_loss = tf.reduce_mean(tf.square(v_pred - td))
 
-            loss=a_loss+c_loss
+            loss=a_loss+0.5*c_loss
         a_grads=t.gradient(loss,self.net.actor.trainable_weights)
             
         c_grads=t.gradient(loss,self.net.critic.trainable_weights)

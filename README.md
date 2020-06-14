@@ -1,6 +1,10 @@
 # HitmanEnv
 Hitman-Go environments based on OpenAI gym.
 
+## Requirements
+* gym 0.14.0
+* numpy
+
 ## Installation
 ```bash
 cd HitmanEnv

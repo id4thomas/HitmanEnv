@@ -37,6 +37,8 @@ class ACModel():
         self.cliprange=0.2
 
         self.op=tf.keras.optimizers.Adam(learning_rate=self.lr)
+        self.e=1
+
     def make_model(self):
         in1=tf.keras.layers.Input(shape=(7, 7, 2,))
         d1=tf.keras.layers.Conv2D(32, (3, 3), activation='relu')(in1)
@@ -80,12 +82,21 @@ class ACModel():
         return actor
     
     def get_action(self,state):
-        state = np.transpose(state, (1, 2, 0))
-        state = np.reshape(state, (1, 7, 7, 2))
-        a=self.actor(state,training=False)
-        val=self.critic(state,training=False)
+        if self.e > np.random.rand():
+            a = random.choice([0, 1, 2, 3])
+        else:
+            state = np.transpose(state, (1, 2, 0))
+            state = np.reshape(state, (1, 7, 7, 2))
+            a=self.actor(state,training=False)
+            val=self.critic(state,training=False)
+            a=np.argmax(a)
         #print(a,np.argmax(a))
-        return  np.argmax(a),val
+        return a,val
+
+    def update_epsilon(self):
+        self.e = self.e * 0.95
+        if self.e < 0.05:
+            self.e = 0.05
 
     def apply_grads(self,a_grads,c_grads):
     #def apply_grads(self,grads,trainables):
@@ -135,7 +146,7 @@ class PPO():
             action,value = self.net.get_action(s)
 
             next_s, reward, done, info = self.env.step(action)
-            if reward==0 and steps>100:
+            if reward==0 and steps>20:
                 reward=-1
 
             if reward ==-1:
@@ -233,6 +244,7 @@ class PPO():
 
             #Train
             self.train(T)
+            self.net.update_epsilon()
             cur_iter+=1
             avg += score_sum/cur_episode
 

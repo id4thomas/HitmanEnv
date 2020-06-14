@@ -24,7 +24,7 @@ class ACModel():
 
         self.actor_lr=1e-4
         self.critic_lr=1e-3
-        self.lr=1e-5
+        self.lr=1e-4
         #self.actor,self.critic=self.make_model()
         self.actor=self.make_actor()
         self.critic=self.make_critic()
@@ -135,6 +135,9 @@ class PPO():
             action,value = self.net.get_action(s)
 
             next_s, reward, done, info = self.env.step(action)
+            if reward==0 and steps>100:
+                reward=-1
+                
             if reward ==-1:
                 reward=-10
             reward_sum += reward
@@ -190,7 +193,7 @@ class PPO():
             v_pred=self.net.critic(s,training=True)
             c_loss = tf.reduce_mean(tf.square(v_pred - td))
 
-            loss=a_loss+0.5*c_loss
+            loss=a_loss+c_loss
         a_grads=t.gradient(loss,self.net.actor.trainable_weights)
             
         c_grads=t.gradient(loss,self.net.critic.trainable_weights)

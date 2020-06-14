@@ -19,9 +19,9 @@ class DuelingDQN:
         self.state_size = (2, 7, 7) # (2, 7, 7)  # tf.transpose(state_tensor, perm=[1, 2, 0])
         self.action_size = 4
 
-        self.hideen_size = 32
-        self.learning_rate = 5e-4
-
+        self.hiden_size = 32
+        #self.learning_rate = 5e-4
+        self.learning_rate = 1e-4
         self.e = 1
 
         self.inputs = tf.keras.layers.Input(shape=(7, 7, 2,))
@@ -52,6 +52,7 @@ class DuelingDQN:
             a = random.choice([0, 1, 2, 3])
         else:
             Q = self.model.predict(state)
+            print(Q)
             a = np.argmax(Q)
 
         return a

@@ -160,19 +160,23 @@ if __name__ == '__main__':
             action = main_network.predict(obs)  # my
 
             obs, reward, done, info = env.step(action)
+            if done:
+                print('done reward {}'.format(reward))
             if step_count>100:
                 done=True
                 reward=-1
             path.append(info[0])
             # 추가 리워드
             # reward = 00
+            '''
             if reward == 0:
                 reward = -0.05
-
+            '''
             if reward == 1:
                 reward = 10
                 #print("Cong")
-
+            if reward ==-1:
+                reward=-10
             if previous_memory is not None and not previous_memory[3]:
                 replay_memory_append(replay_memory, [previous_memory[0], previous_memory[1], previous_memory[2], obs, previous_memory[3]],args.max_mem)
 

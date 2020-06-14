@@ -3,9 +3,9 @@ import hitman_gym
 
 import os
 
-hm = gym.make('hitman-v2')
+hm = gym.make('hitman-v4')
 
-s = hm.reset()
+s = hm.reset('yellow')
 print(s.shape)
 # ans_path = [2, 2, 2, 2, 0, 0]
 #0 up 1 down 2 left 3 right

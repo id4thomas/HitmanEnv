@@ -152,9 +152,7 @@ if __name__ == '__main__':
         previous_memory = None
         round_loss = list()
         path=[env.cur_loc.copy()]
-        state=env.cur_state.copy()
-        state = np.transpose(state, (1, 2, 0))
-        state = np.reshape(state, (1, 7, 7, 2))
+        state=obs
         while not done:
             obs = np.transpose(obs, (1, 2, 0))
             obs = np.reshape(obs, (1, 7, 7, 2))

@@ -303,7 +303,7 @@ class HitmanGO(gym.Env):
         for e in selected_map['moving']:
             self.move_enemies.append(YellowEnemy(e[0],e[1],e[2]))
 
-        return self.cur_state  # (2,7,7)
+        return self.cur_state.copy()  # (2,7,7)
 
     '''
   def render(self, mode='human'):

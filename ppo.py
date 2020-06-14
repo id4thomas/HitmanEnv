@@ -82,13 +82,13 @@ class ACModel():
         return actor
     
     def get_action(self,state):
+        state = np.transpose(state, (1, 2, 0))
+        state = np.reshape(state, (1, 7, 7, 2))
+        val=self.critic(state,training=False)
         if self.e > np.random.rand():
             a = random.choice([0, 1, 2, 3])
         else:
-            state = np.transpose(state, (1, 2, 0))
-            state = np.reshape(state, (1, 7, 7, 2))
             a=self.actor(state,training=False)
-            val=self.critic(state,training=False)
             a=np.argmax(a)
         #print(a,np.argmax(a))
         return a,val

@@ -118,7 +118,6 @@ if __name__ == '__main__':
                     help='Minimum Epsilon')
     parser.add_argument('--max_mem', type=int, default=5000,
                     help='Max Replay memory size')
-
     parser.add_argument('--map', default='simple',
                     help='Map ID')
 

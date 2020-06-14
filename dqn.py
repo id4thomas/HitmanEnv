@@ -152,6 +152,7 @@ if __name__ == '__main__':
         previous_memory = None
         round_loss = list()
         path=[env.cur_loc.copy()]
+        state=env.cur_loc.copy()
         while not done:
             obs = np.transpose(obs, (1, 2, 0))
             obs = np.reshape(obs, (1, 7, 7, 2))
@@ -176,8 +177,10 @@ if __name__ == '__main__':
                 #print("Cong")
             if reward ==-1:
                 reward=-10
-            if previous_memory is not None and not previous_memory[3]:
-                replay_memory_append(replay_memory, [previous_memory[0], previous_memory[1], previous_memory[2], obs, previous_memory[3]],args.max_mem)
+            #state, action, reward, next_state, done
+            replay_memory_append(replay_memory,[state,action,reward,obs,done],args.max_mem)
+            #if previous_memory is not None and not previous_memory[3]:
+            #    replay_memory_append(replay_memory, [previous_memory[0], previous_memory[1], previous_memory[2], obs, previous_memory[3]],args.max_mem)
 
             previous_memory = [obs, action, reward, done]
 

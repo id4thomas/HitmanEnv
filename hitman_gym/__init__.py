@@ -19,8 +19,3 @@ register(
     id='hitman-v4',
     entry_point='hitman_gym.envs:HitmanMap4',
 )
-
-register(
-    id='hitman-v5',
-    entry_point='hitman_gym.envs:HitmanGO',
-)

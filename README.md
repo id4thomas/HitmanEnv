@@ -34,7 +34,7 @@ ep_reward = 0
 
 while not done:
   obs, reward, done, info = env.step(env.action_space.sample())
-  ep_reward += sum(reward)
+  ep_reward += reward
 
 env.close()
 ```
@@ -45,13 +45,13 @@ Another versions of Hitman-Go do not need to register environments. By "gym.make
 import gym
 import hitman_gym
 
-env = gym.make('hitman-v1')  # hitman-v1: 'simple' , hitman-v2: 'blue', hitman-v3: 'yellow'
+env = gym.make('hitman-v1')  # hitman-v1: 'simple' , hitman-v2: 'blue', hitman-v3: 'yellow', hitman-v4: 'yellow_yr'
 done = False
 ep_reward = 0
 
 while not done:
   obs, reward, done, info = env.step(env.action_space.sample())
-  ep_reward += sum(reward)
+  ep_reward += reward
 
 env.close()
 ```

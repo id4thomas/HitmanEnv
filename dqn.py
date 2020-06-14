@@ -137,7 +137,8 @@ if __name__ == '__main__':
     main_network = DuelingDQN(env)
     target_network = DuelingDQN(env)
 
-    map_id=args.map
+    maps={1:'simple',2:'blue',3:'yellow'}
+    map_id=maps[args.map_id]
 
     if not os.path.exists('weight_'+map_id):
         os.makedirs('weight_'+map_id)

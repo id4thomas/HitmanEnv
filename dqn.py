@@ -21,7 +21,7 @@ class DuelingDQN:
 
         self.hiden_size = 32
         #self.learning_rate = 5e-4
-        self.learning_rate = 1e-4
+        self.learning_rate = 5e-4
         self.e = 1
 
         self.inputs = tf.keras.layers.Input(shape=(7, 7, 2,))
@@ -172,11 +172,13 @@ if __name__ == '__main__':
             if reward == 0:
                 reward = -0.05
             '''
+            '''
             if reward == 1:
                 reward = 10
                 #print("Cong")
             if reward ==-1:
                 reward=-10
+            '''
             #state, action, reward, next_state, done
             replay_memory_append(replay_memory,[state,action,reward,obs,done],args.max_mem)
             #if previous_memory is not None and not previous_memory[3]:

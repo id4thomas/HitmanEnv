@@ -35,11 +35,12 @@ class DuelingDQN:
         x = tf.keras.layers.Flatten()(x)  # 3,3,16 -> 144
         x = tf.keras.layers.Dense(16, activation='relu')(x)
         x = tf.keras.layers.Dropout(0.1)(x)
-        x = tf.keras.layers.Dense(1 + self.action_size, activation='linear')(x)
-
+        # x = tf.keras.layers.Dense(1 + self.action_size, activation='linear')(x)
+        self.q = tf.keras.layers.Dense(self.action_size, activation='linear')(x)
+        '''
         self.q = tf.keras.layers.Lambda(lambda x: tf.keras.backend.expand_dims(x[:, 0], -1)
                                                   + x[:, 1:] - tf.keras.backend.mean(x[:, 1:], axis=1, keepdims=True),
-                                        output_shape=(self.action_size,))(x)
+                                        output_shape=(self.action_size,))(x)'''
 
         self.model = tf.keras.models.Model(inputs=self.inputs, outputs=self.q)
         adam = tf.keras.optimizers.Adam(lr=self.learning_rate, epsilon=1e-08)
@@ -120,10 +121,11 @@ if __name__ == '__main__':
                     help='Max Replay memory size')
     parser.add_argument('--map', default='simple',
                     help='Map ID')
-
+    parser.add_argument('--map_id', type=int, default=1,
+                    help='Map id')
     args = parser.parse_args()
 
-    env = gym.make('hitman-v0')#blue enemy
+    env = gym.make('hitman-v'+str(args.map_id))#blue enemy
 
     replay_memory = list()
     num_episodes=args.num_episodes
@@ -144,7 +146,8 @@ if __name__ == '__main__':
         done = False
         ep_reward = 0
         env.seed(ep_i)
-        obs = env.reset(map_id)
+        # obs = env.reset(map_id)
+        obs = env.reset()
 
         cnt = 0
 
@@ -192,6 +195,8 @@ if __name__ == '__main__':
             loss = train_minibatch(main_network, target_network)
             round_loss.append(loss)
             step_count += 1
+            #update prev_state
+            state=obs
 
         print('Episode #{} total reward: {} step: {} epsilon {} path{}: '.format(ep_i, cnt, step_count, main_network.get_epsilon(),path))
         copy_network(main_network, target_network)

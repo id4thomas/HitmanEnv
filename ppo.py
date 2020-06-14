@@ -24,7 +24,7 @@ class ACModel():
 
         self.actor_lr=1e-4
         self.critic_lr=1e-3
-        self.lr=1e-4
+        self.lr=1e-5
         #self.actor,self.critic=self.make_model()
         self.actor=self.make_actor()
         self.critic=self.make_critic()
@@ -49,7 +49,7 @@ class ACModel():
         s_v = tf.keras.layers.Dense(1, activation='linear')(d3)
         pi = tf.keras.layers.Dense(self.action_size, activation='softmax')(d3)
         critic=keras.models.Model(inputs=in1,outputs=s_v)
-        actor=keras.models.Model(inputs=in1,outputs=s_v)
+        actor=keras.models.Model(inputs=in1,outputs=pi)
         return critic,actor
 
     def make_critic(self):

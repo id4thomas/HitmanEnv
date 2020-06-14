@@ -174,7 +174,7 @@ if __name__ == '__main__':
             # reward = 00
             
             if reward == 0:
-                reward = 0.05
+                reward = -0.01
             
             
             if reward == 1:

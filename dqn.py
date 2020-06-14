@@ -142,6 +142,7 @@ if __name__ == '__main__':
     if not os.path.exists('weight_'+map_id):
         os.makedirs('weight_'+map_id)
 
+    save_iter=10
     for ep_i in range(num_episodes):
         done = False
         ep_reward = 0
@@ -204,5 +205,5 @@ if __name__ == '__main__':
         main_network.update_epsilon(args.min_eps)
 
         # save model
-        if ep_i % 50 == 0 and ep_i != 0:
+        if ep_i % save_iter == 0 and ep_i != 0:
             main_network.save_model('./weight_'+map_id+'/model_ep{}.h5'.format(ep_i))

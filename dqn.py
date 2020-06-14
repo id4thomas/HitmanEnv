@@ -28,12 +28,12 @@ class DuelingDQN:
 
         # v (1), advantage (action space) -> aggregation -> Q
 
-        x = tf.keras.layers.Conv2D(32, (3, 3), activation='relu')(self.inputs)  # 7,7,2 -> 5,5,16
+        x = tf.keras.layers.Conv2D(8, (3, 3), activation='relu')(self.inputs)  # 7,7,2 -> 5,5,16
         x = tf.keras.layers.Dropout(0.1)(x)
-        x = tf.keras.layers.Conv2D(32, (3, 3), activation='relu')(x)  # 5,5,16 -> 3,3,16
+        x = tf.keras.layers.Conv2D(8, (3, 3), activation='relu')(x)  # 5,5,16 -> 3,3,16
         x = tf.keras.layers.Dropout(0.1)(x)
         x = tf.keras.layers.Flatten()(x)  # 3,3,16 -> 144
-        x = tf.keras.layers.Dense(32, activation='relu')(x)
+        x = tf.keras.layers.Dense(16, activation='relu')(x)
         x = tf.keras.layers.Dropout(0.1)(x)
         x = tf.keras.layers.Dense(1 + self.action_size, activation='linear')(x)
 
@@ -123,7 +123,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    env = gym.make('hitman-v5')#blue enemy
+    env = gym.make('hitman-v0')#blue enemy
 
     replay_memory = list()
     num_episodes=args.num_episodes

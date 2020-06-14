@@ -70,6 +70,9 @@ class DuelingDQN:
         self.model.save(path)
         print("Model Saved")
 
+    def load_model(self,path):
+        self.model=tf.keras.models.load_model(path)
+        print("Model loaded",path)
 
 def train_minibatch(main_network, target_network):
     if len(replay_memory) < batch_size:
@@ -123,6 +126,10 @@ if __name__ == '__main__':
                     help='Map ID')
     parser.add_argument('--map_id', type=int, default=1,
                     help='Map id')
+    parser.add_argument('--load_map', default='simple',
+                    help='Pretrained map')
+    parser.add_argument('--load_ep', type=int, default=300,
+                    help='Pretrained map')
     args = parser.parse_args()
 
     env = gym.make('hitman-v'+str(args.map_id))#blue enemy
@@ -137,7 +144,10 @@ if __name__ == '__main__':
     main_network = DuelingDQN(env)
     target_network = DuelingDQN(env)
 
-    map_id=args.map
+    main_network.load_model('./weight_'+args.load_map+'/model_ep{}.h5'.format(args.load_ep))
+    target_network.load_model('./weight_'+args.load_map+'/model_ep{}.h5'.format(args.load_ep))
+    maps={1:'simple',2:'blue',3:'yellow'}
+    map_id=maps[args.map_id]
 
     if not os.path.exists('weight_'+map_id):
         os.makedirs('weight_'+map_id)
@@ -158,7 +168,6 @@ if __name__ == '__main__':
         round_loss = list()
         path=[env.cur_loc.copy()]
         state=obs
-        
         while not done:
             obs = np.transpose(obs, (1, 2, 0))
             obs = np.reshape(obs, (1, 7, 7, 2))

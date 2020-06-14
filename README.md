@@ -39,7 +39,7 @@ while not done:
 env.close()
 ```
 
-## Usage (hitman-v1 ~ hitman-v3)
+## Usage (hitman-v1 ~ hitman-v4)
 Another versions of Hitman-Go do not need to register environments. By "gym.make" helps you use the hitman-go environments.
 ```python
 import gym
@@ -56,6 +56,14 @@ while not done:
 env.close()
 ```
 
+## Dueling DQN Train (hitman-v0)
+```bash
+python train.py --num_episodes 10000 --min_eps 0.01 --max_mem 1000 --map simple
+```
+## Dueling DQN Train (hitman-v1 ~ hitman-v4)
+```bash
+python train2.py --num_episodes 10000 --min_eps 0.01 --max_mem 1000 --ver 1
+```
 
 ## Notice
 Sungkyunkwan University Reinforcement Learning Spring 2020

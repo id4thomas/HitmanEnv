@@ -44,7 +44,7 @@ class ACModel():
         d2=tf.keras.layers.Conv2D(32, (3, 3), activation='relu')(d1)
         d2=tf.keras.layers.Dropout(0.1)(d2)
         d2=tf.keras.layers.Flatten()(d2)
-        d3=tf.keras.layers.Dense(32, activation='relu')(d2)
+        d3=tf.keras.layers.Dense(32, activation='tanh')(d2)
         d3 = tf.keras.layers.Dropout(0.1)(d3)
         s_v = tf.keras.layers.Dense(1, activation='linear')(d3)
         pi = tf.keras.layers.Dense(self.action_size, activation='softmax')(d3)
@@ -137,7 +137,7 @@ class PPO():
             next_s, reward, done, info = self.env.step(action)
             if reward==0 and steps>100:
                 reward=-1
-                
+
             if reward ==-1:
                 reward=-10
             reward_sum += reward

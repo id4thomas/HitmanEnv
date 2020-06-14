@@ -48,7 +48,9 @@ class ACModel():
         d3 = tf.keras.layers.Dropout(0.1)(d3)
         s_v = tf.keras.layers.Dense(1, activation='linear')(d3)
         pi = tf.keras.layers.Dense(self.action_size, activation='softmax')(d3)
-        return s_v,pi
+        critic=keras.models.Model(inputs=in1,outputs=s_v)
+        actor=keras.models.Model(inputs=in1,outputs=s_v)
+        return critic,actor
 
     def make_critic(self):
         in1=tf.keras.layers.Input(shape=(7, 7, 2,))
